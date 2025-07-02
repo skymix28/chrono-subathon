@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Chrono Subathon Skymix_28</title>
+  <style>
+    body { background: transparent; color: #fff; font-family: 'Segoe UI', Arial, sans-serif; text-align: center;}
+    #chrono { font-size: 4em; margin: 30px 0;}
+    .btns { margin: 20px 0;}
+    button { font-size: 1.2em; margin: 5px; padding: 10px 20px; border-radius: 8px; border: none; }
+    body { background-color: rgba(0,0,0,0.45);}
+    h2 { margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h2>Subathon de Skymix_28</h2>
+  <div id="chrono">10:00:00</div>
+  <div class="btns">
+    <button onclick="start()">Démarrer</button>
+    <button onclick="pause()">Pause</button>
+    <button onclick="reset()">Reset</button>
+  </div>
+  <div class="btns">
+    <button onclick="addSub()">+1 Sub (+1h30)</button>
+    <button onclick="addFollow()">+1 Follow (+10min)</button>
+  </div>
+  <script>
+    let time = 10 * 3600; // 10 heures en secondes
+    let timer = null;
+    let isRunning = false;
+
+    function update() {
+      let h = String(Math.floor(time/3600)).padStart(2, '0');
+      let m = String(Math.floor((time%3600)/60)).padStart(2, '0');
+      let s = String(time%60).padStart(2, '0');
+      document.getElementById('chrono').textContent = `${h}:${m}:${s}`;
+    }
+
+    function tick() {
+      if (time > 0) {
+        time--;
+        update();
+      } else {
+        pause();
+      }
+    }
+
+    function start() {
+      if (timer !== null) return;
+      timer = setInterval(tick, 1000);
+      isRunning = true;
+    }
+
+    function pause() {
+      clearInterval(timer); timer = null; isRunning = false;
+    }
+
+    function reset() {
+      time = 10 * 3600;
+      update();
+      pause();
+    }
+
+    function addSub() {
+      time += (1*3600 + 30*60); // 1h30
+      update();
+    }
+
+    function addFollow() {
+      time += 10*60; // 10 minutes
+      update();
+    }
+
+    update();
+  </script>
+</body>
+</html>
